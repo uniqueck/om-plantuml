@@ -1,0 +1,145 @@
+@startuml 
+
+!define Rel_(e_alias1, e_alias2, e_label, e_direction="") e_alias1 e_direction e_alias2 : "===e_label"
+!define Rel_(e_alias1, e_alias2, e_label, e_techn, e_direction="") e_alias1 e_direction e_alias2 : "===e_label\n//<size:TECHN_FONT_SIZE>[e_techn]</size>//"
+
+!define Rel(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "-->")
+!define Rel(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "-->")
+
+!define Rel_Back(e_to, e_from, e_label) Rel_(e_to, e_from, e_label, "<--")
+!define Rel_Back(e_to, e_from, e_label, e_techn) Rel_(e_to, e_from, e_label, e_techn, "<--")
+
+!define Rel_Neighbor(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "->")
+!define Rel_Neighbor(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "->")
+
+!define Rel_Back_Neighbor(e_to, e_from, e_label) Rel_(e_to, e_from, e_label, "<-")
+!define Rel_Back_Neighbor(e_to, e_from, e_label, e_techn) Rel_(e_to, e_from, e_label, e_techn, "<-")
+
+!define Rel_D(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "-DOWN->")
+!define Rel_D(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "-DOWN->")
+!define Rel_Down(e_from,e_to, e_label) Rel_D(e_from,e_to, e_label)
+!define Rel_Down(e_from,e_to, e_label, e_techn) Rel_D(e_from,e_to, e_label, e_techn)
+
+!define Rel_U(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "-UP->")
+!define Rel_U(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "-UP->")
+!define Rel_Up(e_from,e_to, e_label) Rel_U(e_from,e_to, e_label)
+!define Rel_Up(e_from,e_to, e_label, e_techn) Rel_U(e_from,e_to, e_label, e_techn)
+
+!define Rel_L(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "-LEFT->")
+!define Rel_L(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "-LEFT->")
+!define Rel_Left(e_from,e_to, e_label) Rel_L(e_from,e_to, e_label)
+!define Rel_Left(e_from,e_to, e_label, e_techn) Rel_L(e_from,e_to, e_label, e_techn)
+
+!define Rel_R(e_from,e_to, e_label) Rel_(e_from,e_to, e_label, "-RIGHT->")
+!define Rel_R(e_from,e_to, e_label, e_techn) Rel_(e_from,e_to, e_label, e_techn, "-RIGHT->")
+!define Rel_Right(e_from,e_to, e_label) Rel_R(e_from,e_to, e_label)
+!define Rel_Right(e_from,e_to, e_label, e_techn) Rel_R(e_from,e_to, e_label, e_techn)
+
+
+!define LAYOUT_TOP_DOWN top to bottom direction
+!define LAYOUT_LEFT_RIGHT left to right direction
+
+!define TECHN_FONT_SIZE 12
+
+skinparam handwritten true
+
+skinparam defaultTextAlignment center
+
+skinparam wrapWidth 200
+skinparam maxMessageSize 150
+
+
+skinparam rectangle {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam rectangle<<boundary>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #444444
+    BorderColor #444444
+    BorderStyle dashed
+}
+
+skinparam rectangle<<buildingblock>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #000000
+    BorderColor #1E90FF
+    BorderStyle solid
+    BackgroundColor #1E90FF
+}
+
+skinparam rectangle<<specifiednode>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #000000
+    BorderColor #90FF1E
+    BorderStyle solid
+    BackgroundColor #90FF1E
+}
+
+!define SpecifiedNode(e_alias, e_label) rectangle "==e_label" <<SpecifiedNode>> as e_alias
+!define SpecifiedNode(e_alias, e_nr, e_label) rectangle "SN-e_nr\n==e_label" <<SpecifiedNode>> as e_alias
+
+!define BuildingBlock(e_alias, e_nr, e_label) rectangle "\lBB-e_nr: e_label" <<BuildingBlock>> as e_alias
+
+!define Boundary(e_alias, e_label) rectangle "==e_label" <<boundary>> as e_alias
+!define Boundary(e_alias, e_label, e_type) rectangle "==e_label\n<size:TECHN_FONT_SIZE>[e_type]</size>" <<boundary>> as e_alias
+
+!define Environment(e_alias, e_label) Boundary(e_alias, e_label, "Env")
+
+!define SubSystem(e_alias, e_label) Boundary(e_alias, e_label, "SUS")
+
+' LAYOUT_LEFT_RIGHT
+
+
+Environment(e9, "ENV-9") {
+	BuildingBlock(bb21, "21", "DeployBa") {
+		SpecifiedNode(deployba, "DeployBa")
+	}
+}
+
+Environment(e2, "ENV-2") {
+	BuildingBlock(bb4, "4", "Uniserv system") {
+		SpecifiedNode(uniserv, "UniServ")
+	}
+}
+
+Environment(e10, "ENV-10") {
+	BuildingBlock(bb22, "22", "ELK") {
+		SpecifiedNode(elk, "ELK Master")
+	}
+}
+
+Environment(e11, "ENV-11") {
+	BuildingBlock(bb25, "25", "Badenia Applications") {
+		SpecifiedNode(renderingClient, "Rendering Client")
+	}
+}
+
+SubSystem(s1, "SUS-1") {
+	BuildingBlock(bb2, "2", "Database System") {
+		SpecifiedNode(db11, "11", "Oracle Database")
+	}
+	BuildingBlock(bb1, "1", "Online") {
+		SpecifiedNode(sn11, "11", "Application runtime online")
+		SpecifiedNode(sn22, "22", "ELK Beats")
+	}
+	BuildingBlock(bb28, "28", "Badenia Client") {
+		SpecifiedNode(sn12, "12", "Badenia Client")
+	}
+}
+
+' Connections
+Rel_Neighbor(sn11,sn22, "1")
+sn11 -- deployba
+sn11 -- uniserv
+Rel_Down(sn11,db11,"5")
+Rel_Down(sn11,sn12,"6")
+sn11 -- renderingClient
+
+Rel(sn22,elk,"1")
+
+@enduml 
